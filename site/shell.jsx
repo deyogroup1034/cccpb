@@ -179,15 +179,16 @@ function Nav({ current, go, cartCount, openCart }) {
                     </svg>
                   </button>
                   {expanded && (
-                    <div style={{ paddingLeft: 16, paddingBottom: 8 }}>
+                    <div style={{ paddingLeft: 16, paddingBottom: 8, display: 'flex', flexDirection: 'column' }}>
                       {n.children.map(c => (
                         <button
                           key={c.id}
                           className={`nav__link ${current === c.id ? 'nav__link--active' : ''}`}
                           onClick={() => { setMenuOpen(false); go(c.id); }}
                           style={{
+                            display: 'block', width: '100%', textAlign: 'left',
                             fontFamily: 'var(--serif)',
-                            fontSize: 16, textTransform: 'none', letterSpacing: 0,
+                            fontSize: 18, textTransform: 'none', letterSpacing: 0,
                             fontStyle: 'italic', color: 'var(--ink-2)',
                             padding: '12px 0', borderBottom: 'none',
                           }}
