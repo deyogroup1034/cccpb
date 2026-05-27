@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CCCPB · Redesigned site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #1a1612;
+      --bg-2: #221c15;
+      --paper: #f6f0e3;
+      --ink: #1c1813;
+      --muted: rgba(255,255,255,0.6);
+      --gold: #c9a96a;
+      --oxblood: #7a1e1e;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--paper);
+      font-family: 'Public Sans', system-ui, sans-serif;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(122,30,30,0.18), transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(176,139,61,0.12), transparent 55%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.8  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      opacity: 0.9;
+    }
+
+    /* Top chrome */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 20px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .topbar > * { pointer-events: auto; }
+    .brand {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .brand__mark {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--oxblood);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 22px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .brand__text { display: flex; flex-direction: column; gap: 2px; }
+    .brand__text b {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500; font-size: 18px;
+      letter-spacing: 0.02em;
+    }
+    .brand__text span {
+      font-size: 9.5px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--muted); font-weight: 500;
+    }
+    .meta {
+      display: flex; gap: 32px; align-items: center;
+      font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); font-weight: 500;
+    }
+    .meta__item b { color: var(--paper); font-weight: 600; }
+
+    /* Scaled stage */
+    .stage {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1;
+    }
+    .scaler {
+      transform-origin: center center;
+      display: flex; gap: 36px; align-items: flex-start;
+      padding: 100px 40px 60px;
+    }
+
+    /* Device labels */
+    .device {
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+    }
+    .device__lbl {
+      font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .device__lbl::before, .device__lbl::after {
+      content: ''; width: 28px; height: 1px; background: rgba(255,255,255,0.18);
+    }
+    .device__sz {
+      font-family: 'Courier New', monospace; font-size: 10px;
+      color: rgba(255,255,255,0.35); letter-spacing: 0.06em;
+    }
+
+    /* Mobile frame styles (we use real iframe inside iOS-style device shell) */
+    .frame-iframe {
+      border: 0; width: 100%; height: 100%; background: var(--paper);
+    }
+
+    /* Browser window */
+    .bw {
+      width: 1240px; height: 800px;
+      border-radius: 12px; overflow: hidden;
+      box-shadow:
+        0 60px 120px -20px rgba(0,0,0,0.55),
+        0 24px 60px -10px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(0,0,0,0.4);
+      display: flex; flex-direction: column;
+      background: #2a2520;
+    }
+    .bw__bar {
+      height: 44px; background: #2a2520;
+      display: flex; align-items: center; padding: 0 14px; gap: 14px;
+      border-bottom: 1px solid rgba(0,0,0,0.4);
+    }
+    .bw__dots { display: flex; gap: 8px; }
+    .bw__dots span { width: 12px; height: 12px; border-radius: 50%; }
+    .bw__dots span:nth-child(1) { background: #ff5f57; }
+    .bw__dots span:nth-child(2) { background: #febc2e; }
+    .bw__dots span:nth-child(3) { background: #28c840; }
+    .bw__nav {
+      display: flex; gap: 6px; margin-left: 10px;
+    }
+    .bw__nav button {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: transparent; border: none; color: rgba(255,255,255,0.35);
+      cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bw__nav button:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.05); }
+    .bw__url {
+      flex: 1; height: 30px; border-radius: 16px;
+      background: rgba(0,0,0,0.3);
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 16px;
+      font-size: 12px; color: rgba(255,255,255,0.7);
+      max-width: 480px; margin: 0 auto;
+    }
+    .bw__url svg { color: rgba(255,255,255,0.4); flex-shrink: 0; }
+    .bw__url b { font-weight: 400; color: rgba(255,255,255,0.55); }
+    .bw__body { flex: 1; background: var(--paper); position: relative; }
+
+    /* iOS device */
+    .ios {
+      width: 380px; height: 824px;
+      border-radius: 48px;
+      background: #0a0a0c;
+      padding: 11px;
+      position: relative;
+      box-shadow:
+        0 60px 120px -20px rgba(0,0,0,0.55),
+        0 24px 60px -10px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(255,255,255,0.06) inset,
+        0 0 0 2px rgba(0,0,0,0.6);
+    }
+    .ios__screen {
+      width: 100%; height: 100%; border-radius: 38px;
+      overflow: hidden; position: relative;
+      background: var(--paper);
+    }
+    .ios__island {
+      position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+      width: 112px; height: 32px; border-radius: 24px;
+      background: #000; z-index: 10;
+    }
+    .ios__home {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      width: 124px; height: 4px; border-radius: 100px;
+      background: rgba(0,0,0,0.3); z-index: 10;
+    }
+    .ios__status {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 54px; padding: 19px 28px 0;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 9; pointer-events: none;
+      font-family: -apple-system, system-ui;
+      font-size: 15px; font-weight: 600; color: var(--ink);
+    }
+
+    /* Tweaks panel (custom inline) */
+    .tweaks {
+      position: fixed; bottom: 24px; right: 24px;
+      width: 260px;
+      background: rgba(30, 24, 18, 0.78);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: var(--paper);
+      z-index: 20;
+      overflow: hidden;
+      font-size: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .tweaks__hd {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); font-weight: 600;
+    }
+    .tweaks__hd b { color: var(--paper); font-weight: 600; }
+    .tweaks__body { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+    .twk-group { display: flex; flex-direction: column; gap: 8px; }
+    .twk-label {
+      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); font-weight: 600;
+    }
+    .twk-seg {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+      padding: 3px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+    }
+    .twk-seg button {
+      padding: 8px 4px;
+      background: transparent; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.6);
+      font-size: 11px; font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .twk-seg button.is-active {
+      background: rgba(255,255,255,0.08);
+      color: var(--paper);
+    }
+    .twk-row {
+      display: flex; gap: 8px;
+    }
+    .twk-btn {
+      flex: 1;
+      padding: 9px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--paper);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+      transition: all 0.15s;
+    }
+    .twk-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* Mode-specific layouts */
+    .stage[data-mode="mobile"] .bw,
+    .stage[data-mode="mobile"] .device-desktop { display: none; }
+    .stage[data-mode="desktop"] .ios,
+    .stage[data-mode="desktop"] .device-mobile { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Top chrome -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand__mark">C</div>
+      <div class="brand__text">
+        <b>CCCPB · Site redesign</b>
+        <span>Hi-fi prototype · 2026</span>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__item">Aesthetic <b>Warm &amp; reverent</b></div>
+      <div class="meta__item">Pages <b>8</b></div>
+      <div class="meta__item">Date <b>April 30, 2026</b></div>
+    </div>
+  </div>
+
+  <!-- Stage -->
+  <div class="stage" id="stage" data-mode="split">
+    <div class="scaler" id="scaler">
+
+      <!-- Desktop browser window -->
+      <div class="device device-desktop">
+        <div class="device__lbl">Desktop · 1280 × 800</div>
+        <div class="bw">
+          <div class="bw__bar">
+            <div class="bw__dots"><span></span><span></span><span></span></div>
+            <div class="bw__nav">
+              <button onclick="reloadFrame('frame-desktop')" title="Refresh">↻</button>
+            </div>
+            <div class="bw__url">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <rect x="2.5" y="5.5" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              <span><b>https://</b>collincountychristianprayerbreakfast.com</span>
+            </div>
+            <div style="width: 60px;"></div>
+          </div>
+          <div class="bw__body">
+            <iframe id="frame-desktop" class="frame-iframe" src="site/index.html" title="CCCPB site (desktop)"></iframe>
+          </div>
+        </div>
+        <div class="device__sz">site.html @ 100%</div>
+      </div>
+
+      <!-- iOS device -->
+      <div class="device device-mobile">
+        <div class="device__lbl">Mobile · iPhone 16 Pro</div>
+        <div class="ios">
+          <div class="ios__screen">
+            <div class="ios__status">
+              <span>9:41</span>
+              <span style="display: flex; gap: 6px; align-items: center;">
+                <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="5" width="3" height="6" rx="0.5"/><rect x="9" y="3" width="3" height="8" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+                <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x="0.5" y="0.5" width="20" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.5"/><rect x="2" y="2" width="17" height="7" rx="1" fill="currentColor"/><rect x="21" y="3.5" width="1.5" height="4" rx="0.5" fill="currentColor" opacity="0.4"/></svg>
+              </span>
+            </div>
+            <div class="ios__island"></div>
+            <iframe id="frame-mobile" class="frame-iframe" src="site/index.html" title="CCCPB site (mobile)" style="border-radius: 38px;"></iframe>
+            <div class="ios__home"></div>
+          </div>
+        </div>
+        <div class="device__sz">site.html @ 380px</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tweaks (custom, not the starter) -->
+  <div class="tweaks" id="tweaks" style="display: none;">
+    <div class="tweaks__hd">
+      <b>Tweaks</b>
+      <span style="cursor: pointer;" onclick="closeTweaks()">×</span>
+    </div>
+    <div class="tweaks__body">
+      <div class="twk-group">
+        <div class="twk-label">View</div>
+        <div class="twk-seg" id="view-seg">
+          <button data-mode="desktop">Desktop</button>
+          <button data-mode="split" class="is-active">Split</button>
+          <button data-mode="mobile">Mobile</button>
+        </div>
+      </div>
+      <div class="twk-group">
+        <div class="twk-label">Quick jump</div>
+        <div class="twk-row">
+          <button class="twk-btn" onclick="navAll('home')">Home</button>
+          <button class="twk-btn" onclick="navAll('speaker')">Speaker</button>
+          <button class="twk-btn" onclick="navAll('tickets')">Tickets</button>
+        </div>
+        <div class="twk-row">
+          <button class="twk-btn" onclick="navAll('program')">Program</button>
+          <button class="twk-btn" onclick="navAll('donate')">Donate</button>
+          <button class="twk-btn" onclick="navAll('gallery')">Gallery</button>
+        </div>
+      </div>
+      <div class="twk-group">
+        <div class="twk-label">Actions</div>
+        <div class="twk-row">
+          <button class="twk-btn" onclick="reloadAll()">↻ Reload both</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Auto-scale stage to fit viewport
+    const SIZES = {
+      split:   { w: 1240 + 36 + 380 + 80, h: 824 + 100 },
+      desktop: { w: 1240 + 80, h: 800 + 100 },
+      mobile:  { w: 380 + 80, h: 824 + 100 },
+    };
+    const scaler = document.getElementById('scaler');
+    const stage = document.getElementById('stage');
+
+    function fit() {
+      const mode = stage.dataset.mode;
+      const { w, h } = SIZES[mode];
+      const sx = window.innerWidth / w;
+      const sy = window.innerHeight / h;
+      const s = Math.min(sx, sy, 1);
+      scaler.style.transform = `scale(${s})`;
+    }
+    window.addEventListener('resize', fit);
+    requestAnimationFrame(fit);
+
+    // View segmented control
+    document.querySelectorAll('#view-seg button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#view-seg button').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        stage.dataset.mode = btn.dataset.mode;
+        fit();
+      });
+    });
+
+    function reloadFrame(id) {
+      const f = document.getElementById(id);
+      f.src = f.src;
+    }
+    function reloadAll() {
+      reloadFrame('frame-desktop');
+      reloadFrame('frame-mobile');
+    }
+
+    // Cross-frame navigation: post a message to the iframes
+    function navAll(page) {
+      ['frame-desktop','frame-mobile'].forEach(id => {
+        const f = document.getElementById(id);
+        try {
+          f.contentWindow.postMessage({ type: 'cccpb:nav', page }, '*');
+        } catch (e) {}
+      });
+    }
+
+    // Tweaks protocol (host integration)
+    window.addEventListener('message', (e) => {
+      if (!e.data || typeof e.data !== 'object') return;
+      if (e.data.type === '__activate_edit_mode') {
+        document.getElementById('tweaks').style.display = 'block';
+      } else if (e.data.type === '__deactivate_edit_mode') {
+        document.getElementById('tweaks').style.display = 'none';
+      }
+    });
+    function closeTweaks() {
+      document.getElementById('tweaks').style.display = 'none';
+      try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch (e) {}
+    }
+    try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch (e) {}
+  </script>
+</body>
+</html>
