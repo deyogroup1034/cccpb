@@ -77,6 +77,7 @@ function Nav({ current, go, cartCount, openCart }) {
   };
 
   return (
+    <React.Fragment>
     <header className="nav" data-screen-label="top nav">
       <div className="nav__inner">
         <Logo go={go} />
@@ -158,7 +159,8 @@ function Nav({ current, go, cartCount, openCart }) {
           <button className="mobile-menu-btn" onClick={() => setMenuOpen(true)}><span></span></button>
         </div>
       </div>
-      {menuOpen && (
+    </header>
+    {menuOpen && (
         <div className="mobile-menu">
           <button className="mobile-menu__close" onClick={() => setMenuOpen(false)}>×</button>
           {nav.map(n => {
@@ -206,7 +208,7 @@ function Nav({ current, go, cartCount, openCart }) {
           })}
         </div>
       )}
-    </header>
+    </React.Fragment>
   );
 }
 
