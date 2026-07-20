@@ -328,7 +328,7 @@
   </div>
 
   <!-- Tweaks (custom, not the starter) -->
-  <div class="tweaks" id="tweaks" style="display: none;">
+  <div class="tweaks" id="tweaks">
     <div class="tweaks__hd">
       <b>Tweaks</b>
       <span style="cursor: pointer;" onclick="closeTweaks()">×</span>
@@ -439,8 +439,6 @@
       if (!e.data || typeof e.data !== 'object') return;
       if (e.data.type === '__activate_edit_mode') {
         document.getElementById('tweaks').style.display = 'block';
-      } else if (e.data.type === '__deactivate_edit_mode') {
-        document.getElementById('tweaks').style.display = 'none';
       }
     });
     function closeTweaks() {
