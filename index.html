@@ -250,6 +250,23 @@
     }
     .twk-btn:hover { background: rgba(255,255,255,0.1); }
 
+    .tweaks-fab {
+      position: fixed; bottom: 24px; right: 24px;
+      display: none;
+      align-items: center; gap: 8px;
+      padding: 10px 16px;
+      background: rgba(30, 24, 18, 0.85);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      color: var(--paper);
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+      cursor: pointer; z-index: 20;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .tweaks-fab:hover { background: rgba(50, 40, 30, 0.9); }
+
     /* Mode-specific layouts */
     .stage[data-mode="mobile"] .bw,
     .stage[data-mode="mobile"] .device-desktop { display: none; }
@@ -372,6 +389,9 @@
     </div>
   </div>
 
+  <!-- Reopen tweaks button -->
+  <button class="tweaks-fab" id="tweaks-fab" onclick="openTweaks()">⚙ Tweaks</button>
+
   <script>
     // Auto-scale stage to fit viewport
     const SIZES = {
@@ -438,11 +458,16 @@
     window.addEventListener('message', (e) => {
       if (!e.data || typeof e.data !== 'object') return;
       if (e.data.type === '__activate_edit_mode') {
-        document.getElementById('tweaks').style.display = 'block';
+        openTweaks();
       }
     });
+    function openTweaks() {
+      document.getElementById('tweaks').style.display = 'block';
+      document.getElementById('tweaks-fab').style.display = 'none';
+    }
     function closeTweaks() {
       document.getElementById('tweaks').style.display = 'none';
+      document.getElementById('tweaks-fab').style.display = 'flex';
       try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch (e) {}
     }
     try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch (e) {}
