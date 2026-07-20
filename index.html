@@ -269,7 +269,7 @@
       </div>
     </div>
     <div class="meta">
-      <div class="meta__item">Aesthetic <b>Warm &amp; reverent</b></div>
+      <div class="meta__item">Aesthetic <b id="meta-aesthetic">Executive summit (v2)</b></div>
       <div class="meta__item">Pages <b>8</b></div>
       <div class="meta__item">Date <b>April 30, 2026</b></div>
     </div>
@@ -298,7 +298,7 @@
             <div style="width: 60px;"></div>
           </div>
           <div class="bw__body">
-            <iframe id="frame-desktop" class="frame-iframe" src="site/index.html" title="CCCPB site (desktop)"></iframe>
+            <iframe id="frame-desktop" class="frame-iframe" src="site-v2/index.html" title="CCCPB site (desktop)"></iframe>
           </div>
         </div>
         <div class="device__sz">site.html @ 100%</div>
@@ -317,7 +317,7 @@
               </span>
             </div>
             <div class="ios__island"></div>
-            <iframe id="frame-mobile" class="frame-iframe" src="site/index.html" title="CCCPB site (mobile)" style="border-radius: 38px;"></iframe>
+            <iframe id="frame-mobile" class="frame-iframe" src="site-v2/index.html" title="CCCPB site (mobile)" style="border-radius: 38px;"></iframe>
             <div class="ios__home"></div>
           </div>
         </div>
@@ -334,6 +334,14 @@
       <span style="cursor: pointer;" onclick="closeTweaks()">×</span>
     </div>
     <div class="tweaks__body">
+      <div class="twk-group">
+        <div class="twk-label">Version</div>
+        <div class="twk-seg" id="ver-seg" style="grid-template-columns: repeat(3, 1fr);">
+          <button data-ver="site">V1</button>
+          <button data-ver="site-v2" class="is-active">V2</button>
+          <button data-ver="site-v3">V3</button>
+        </div>
+      </div>
       <div class="twk-group">
         <div class="twk-label">View</div>
         <div class="twk-seg" id="view-seg">
@@ -403,6 +411,18 @@
       reloadFrame('frame-desktop');
       reloadFrame('frame-mobile');
     }
+
+    // Version toggle
+    document.querySelectorAll('#ver-seg button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#ver-seg button').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const ver = btn.dataset.ver;
+        document.getElementById('frame-desktop').src = ver + '/index.html';
+        document.getElementById('frame-mobile').src = ver + '/index.html';
+        document.getElementById('meta-aesthetic').textContent = { 'site': 'Warm & reverent (v1)', 'site-v2': 'Executive summit (v2)', 'site-v3': 'Summit — blue (v3)' }[ver];
+      });
+    });
 
     // Cross-frame navigation: post a message to the iframes
     function navAll(page) {
