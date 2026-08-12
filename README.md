@@ -1,49 +1,46 @@
-# CCCPB — Site Redesign (2026)
+# CCCPB — site redesign prototype
 
-A high-fidelity interactive prototype for the Collin County Christian Prayer Breakfast website redesign.
+Live preview: https://deyogroup1034.github.io/cccpb/
+Version switcher: **Tweaks** panel, bottom right.
 
-**Live preview**: open `index.html` in any modern browser.
+| Version | Direction |
+| --- | --- |
+| V1 `site/` | Warm & reverent — cream, oxblood, gold |
+| V2 `site-v2/` | Executive summit — off-white, near-black, crimson |
+| V3 `site-v3/` | Summit, blue palette |
+| **V4 `site-v4/`** | **Board build — V2 layout, red/white/blue brand, inclusive messaging** |
 
-## What's here
+## V4 — what changed from board feedback
 
-- `index.html` — Presentation shell: shows the prototype inside a desktop browser frame and an iPhone frame side-by-side. Tweaks panel toggles Desktop / Split / Mobile views and quick-jumps between pages.
-- `site/` — The actual responsive prototype (8 pages, full interactions):
-  - `site/index.html` — entry point
-  - `site/style.css` — design system (warm & reverent palette, Cormorant Garamond + Public Sans)
-  - `site/data.js` — all copy + content
-  - `site/shell.jsx` — nav, footer, cart drawer, countdown bar
-  - `site/pages-main.jsx` — Home, About, Speaker, Program
-  - `site/pages-actions.jsx` — Tickets, Donate, Gallery, Location
-  - `site/app.jsx` — routing + cart state
-- `browser-window.jsx`, `ios-frame.jsx`, `tweaks-panel.jsx` — UI scaffolding for the presentation shell
+**Mickey — broaden the messaging beyond business**
+- Hero rewritten: "Churches, city halls, schools, first responders, businesses, and families."
+- New homepage section **Who's in the room** — four audiences: churches & ministries, city & county leaders, businesses & professionals, individuals & families.
+- History, mission, and About copy reworked around the county at prayer rather than the marketplace.
+- Program item renamed "Prayer for Collin County" with churches, schools, first responders, elected leaders, businesses, families named.
 
-## Design direction
+**Steve**
+- Red type of V2 kept as the primary accent; palette is now red / white / blue throughout (navy replaces gold).
+- Logo: red-white-blue banded cross mark, drawn from the old logo direction. Placeholder — final artwork still needed.
+- "Great Leaders Kneel First" retained. Prayer breakfast emphasis raised: full event name in the hero eyebrow, "Prayer Breakfast" in the sticky bar, and a National Day of Prayer badge above the headline.
+- Menu structure kept as approved.
+- Contact info: new **Contact** page, plus phone / email / mailing address in the footer and a line in the cart confirming a receipt copy goes to the treasurer and chair.
+- Previous speakers: new **About › Previous Speakers** page — 2027 speaker featured, prior years listed by year.
+- Sponsors, in-kind, volunteers: new **Get Involved** page with three needs side by side, plus a navy band on the homepage carrying the counts.
+- Gallery kept as-is.
+- Shortened URL shown in the preview chrome as `cccpb.org`.
 
-- **Aesthetic**: Warm & reverent — cream/parchment background with subtle paper grain, oxblood accent (`#7a1e1e`), warm gold rules
-- **Type**: Cormorant Garamond (display) + Public Sans (body), small-caps eyebrows
-- **Imagery**: All photos are placeholder boxes labeled with what should go there — to be replaced with real photography in production
+**Peter**
+- **About › Our Board Members** page added — 11-slot roster grid with headshot placeholders.
+- Location map reduced from a full-height panel to a 16:10 block, with Google Maps and directions links beside it.
+- Check address updated to **PO Box 6451, McKinney, TX 75071**, payable to "Collin County Christian Prayer Breakfast."
+- **Contact** tab added with phone, email, and mailing address.
+- Red and blue kept for brand recognition.
 
-## Pages
-
-Home · About · Program (dropdown: Program / Speaker / Gallery / Location) · Tickets · Donate
-
-## Interactive features
-
-- Live countdown to April 30, 2026 (sticky top bar + big hero card)
-- Animated hero with rotating scripture quote
-- Full ticket cart drawer — tickets, tables, sponsorships, live subtotal
-- Donate page with range slider, preset chips, monthly toggle, live tier label
-- Filterable gallery with lightbox
-- Stylized SVG map on Location page
-- Mobile menu (hamburger drawer) with collapsible Program submenu
-
-## Running locally
-
-No build step. Just open `index.html` in a browser. (Or serve the folder with any static server: `python -m http.server` etc.)
-
-## Notes for reviewers
-
-- Use the **Tweaks** toggle (top right) to switch between Desktop / Split / Mobile views
-- Click into the desktop browser window or iPhone frame to interact with the prototype directly
-- All copy is editable in `site/data.js`
-- This is a prototype — checkout, donation, and form submissions are not wired to a backend
+## Open items — content needed
+- Board roster: names, roles, organizations, headshots.
+- Previous speakers: years, names, titles, one line each.
+- Final logo artwork.
+- Social handles (Facebook / Instagram / LinkedIn slots are in place).
+- Photography for the gallery, hero, and speaker portrait.
+- Event date: prototype now reads **Thursday, May 6, 2027 — 28th Annual**, aligned to the next National Day of Prayer. Confirm.
+- Purchase notifications to Mickey and Peter — needs the payment processor decision before wiring.

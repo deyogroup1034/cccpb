@@ -46,19 +46,13 @@
       display: flex; align-items: center; gap: 14px;
     }
     .brand__mark {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--oxblood);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--gold);
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 22px;
-      border: 1px solid rgba(255,255,255,0.15);
+      height: 36px; width: auto; display: block;
     }
     .brand__text { display: flex; flex-direction: column; gap: 2px; }
     .brand__text b {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 500; font-size: 18px;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.02em; white-space: nowrap;
     }
     .brand__text span {
       font-size: 9.5px; letter-spacing: 0.22em;
@@ -67,7 +61,7 @@
     .meta {
       display: flex; gap: 32px; align-items: center;
       font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--muted); font-weight: 500;
+      color: var(--muted); font-weight: 500; white-space: nowrap;
     }
     .meta__item b { color: var(--paper); font-weight: 600; }
 
@@ -78,9 +72,10 @@
       z-index: 1;
     }
     .scaler {
+      transform: scale(var(--fit, 1));
       transform-origin: center center;
       display: flex; gap: 36px; align-items: flex-start;
-      padding: 100px 40px 60px;
+      padding: 24px 40px;
     }
 
     /* Device labels */
@@ -268,6 +263,13 @@
     .tweaks-fab:hover { background: rgba(50, 40, 30, 0.9); }
 
     /* Mode-specific layouts */
+    @media (max-width: 1100px) {
+      .meta { gap: 20px; }
+      .meta__item:nth-child(2) { display: none; }
+    }
+    @media (max-width: 900px) {
+      .meta__item:first-child { display: none; }
+    }
     .stage[data-mode="mobile"] .bw,
     .stage[data-mode="mobile"] .device-desktop { display: none; }
     .stage[data-mode="desktop"] .ios,
@@ -279,16 +281,16 @@
   <!-- Top chrome -->
   <div class="topbar">
     <div class="brand">
-      <div class="brand__mark">C</div>
+      <img class="brand__mark" src="site-v4/assets/logo-mark.png" alt="CCCPB" />
       <div class="brand__text">
         <b>CCCPB · Site redesign</b>
         <span>Hi-fi prototype · 2026</span>
       </div>
     </div>
     <div class="meta">
-      <div class="meta__item">Aesthetic <b id="meta-aesthetic">Executive summit (v2)</b></div>
-      <div class="meta__item">Pages <b>8</b></div>
-      <div class="meta__item">Date <b>April 30, 2026</b></div>
+      <div class="meta__item">Aesthetic <b id="meta-aesthetic">Board build — red/white/blue (v4)</b></div>
+      <div class="meta__item">Pages <b>12</b></div>
+      <div class="meta__item">Date <b>Thursday, May 6, 2027</b></div>
     </div>
   </div>
 
@@ -310,12 +312,12 @@
                 <rect x="2.5" y="5.5" width="7" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/>
                 <path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.2"/>
               </svg>
-              <span><b>https://</b>collincountychristianprayerbreakfast.com</span>
+              <span><b>https://</b>cccpb.org</span>
             </div>
             <div style="width: 60px;"></div>
           </div>
           <div class="bw__body">
-            <iframe id="frame-desktop" class="frame-iframe" src="site-v2/index.html" title="CCCPB site (desktop)"></iframe>
+            <iframe id="frame-desktop" class="frame-iframe" src="site-v4/index.html" title="CCCPB site (desktop)"></iframe>
           </div>
         </div>
         <div class="device__sz">site.html @ 100%</div>
@@ -334,7 +336,7 @@
               </span>
             </div>
             <div class="ios__island"></div>
-            <iframe id="frame-mobile" class="frame-iframe" src="site-v2/index.html" title="CCCPB site (mobile)" style="border-radius: 38px;"></iframe>
+            <iframe id="frame-mobile" class="frame-iframe" src="site-v4/index.html" title="CCCPB site (mobile)" style="border-radius: 38px;"></iframe>
             <div class="ios__home"></div>
           </div>
         </div>
@@ -353,10 +355,11 @@
     <div class="tweaks__body">
       <div class="twk-group">
         <div class="twk-label">Version</div>
-        <div class="twk-seg" id="ver-seg" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="twk-seg" id="ver-seg" style="grid-template-columns: repeat(4, 1fr);">
           <button data-ver="site">V1</button>
-          <button data-ver="site-v2" class="is-active">V2</button>
+          <button data-ver="site-v2">V2</button>
           <button data-ver="site-v3">V3</button>
+          <button data-ver="site-v4" class="is-active">V4</button>
         </div>
       </div>
       <div class="twk-group">
@@ -378,6 +381,14 @@
           <button class="twk-btn" onclick="navAll('program')">Program</button>
           <button class="twk-btn" onclick="navAll('donate')">Donate</button>
           <button class="twk-btn" onclick="navAll('gallery')">Gallery</button>
+        </div>
+        <div class="twk-row">
+          <button class="twk-btn" onclick="navAll('board')">Board</button>
+          <button class="twk-btn" onclick="navAll('speakers')">Past spkrs</button>
+        </div>
+        <div class="twk-row">
+          <button class="twk-btn" onclick="navAll('involved')">Get Involved</button>
+          <button class="twk-btn" onclick="navAll('contact')">Contact</button>
         </div>
       </div>
       <div class="twk-group">
@@ -401,17 +412,30 @@
     };
     const scaler = document.getElementById('scaler');
     const stage = document.getElementById('stage');
+    const topbar = document.querySelector('.topbar');
 
     function fit() {
       const mode = stage.dataset.mode;
-      const { w, h } = SIZES[mode];
+      // Topbar clearance must sit OUTSIDE the transform, or it scales with --fit.
+      const th = topbar.offsetHeight + 16;
+      stage.style.paddingTop = th + 'px';
+      // Measure the scaler's own unscaled layout box so the fit can't drift
+      // when frame sizes or paddings change.
+      const w = scaler.offsetWidth || SIZES[mode].w;
+      const h = scaler.offsetHeight || SIZES[mode].h;
       const sx = window.innerWidth / w;
-      const sy = window.innerHeight / h;
+      const sy = (window.innerHeight - th) / h;
       const s = Math.min(sx, sy, 1);
-      scaler.style.transform = `scale(${s})`;
+      document.documentElement.style.setProperty('--fit', s);
     }
     window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(document.documentElement);
+    document.getElementById('frame-desktop').addEventListener('load', fit);
+    document.getElementById('frame-mobile').addEventListener('load', fit);
+    fit();
     requestAnimationFrame(fit);
+    window.fit = fit;
 
     // View segmented control
     document.querySelectorAll('#view-seg button').forEach(btn => {
@@ -440,7 +464,7 @@
         const ver = btn.dataset.ver;
         document.getElementById('frame-desktop').src = ver + '/index.html';
         document.getElementById('frame-mobile').src = ver + '/index.html';
-        document.getElementById('meta-aesthetic').textContent = { 'site': 'Warm & reverent (v1)', 'site-v2': 'Executive summit (v2)', 'site-v3': 'Summit — blue (v3)' }[ver];
+        document.getElementById('meta-aesthetic').textContent = { 'site': 'Warm & reverent (v1)', 'site-v2': 'Executive summit (v2)', 'site-v3': 'Summit — blue (v3)', 'site-v4': 'Board build — red/white/blue (v4)' }[ver];
       });
     });
 
